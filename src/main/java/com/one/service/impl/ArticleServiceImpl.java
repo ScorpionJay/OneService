@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -69,7 +71,8 @@ public class ArticleServiceImpl implements ArticleService {
 		
 		Query query = new Query();
 		query.addCriteria(new Criteria("createTime").lt(time));	
-		query.addCriteria(new Criteria("type").is(type));	
+		query.addCriteria(new Criteria("type").is(type));
+		query.with(new Sort(Direction.DESC, "createTime"));
 		query.limit(pageSize);
 
 		List<Article> articleList = mongoTemplate.find(query, Article.class);
