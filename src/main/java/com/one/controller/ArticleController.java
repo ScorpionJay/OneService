@@ -48,5 +48,14 @@ public class ArticleController {
 		return resultVo;
 	}
 	
+	@RequestMapping(value = "/posts", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultVo getPosts(String date) {
+		ResultVo resultVo = new ResultVo();
+		List<ArticleVo> lsit = articleService.getByType( date);
+		resultVo.setData(lsit);
+		log.info(resultVo.toString());
+		return resultVo;
+	}
 	
 }

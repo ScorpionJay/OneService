@@ -7,8 +7,10 @@ package com.one.vo;
 import java.io.Serializable;
 import java.util.Date;
 
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * article
@@ -28,6 +30,7 @@ public class ArticleVo implements Serializable {
 
 	private String auth = "";
 	private String type = "";
+	   
 	private Date createTime = new Date();
 
 	public String getId() {
@@ -74,6 +77,8 @@ public class ArticleVo implements Serializable {
 		return createTime;
 	}
 
+	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")  
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")  
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}

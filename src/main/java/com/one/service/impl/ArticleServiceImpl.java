@@ -71,7 +71,7 @@ public class ArticleServiceImpl implements ArticleService {
 		
 		Query query = new Query();
 		query.addCriteria(new Criteria("createTime").lt(time));	
-		query.addCriteria(new Criteria("type").is(type));
+//		query.addCriteria(new Criteria("type").is(type));
 		query.with(new Sort(Direction.DESC, "createTime"));
 		query.limit(pageSize);
 
@@ -96,6 +96,45 @@ public class ArticleServiceImpl implements ArticleService {
 	@Override
 	public void deleteById(String id) {
 		mongoTemplate.remove(new Query(where("id").is(id)), Article.class);
+	}
+
+	@Override
+	public List<ArticleVo> getByType(String data) {
+		List<ArticleVo> list = new ArrayList<>();
+
+		Query query = new Query();
+		
+		if(data != null){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date time = new Date();
+			try {
+				time = sdf.parse(data);
+				query.addCriteria(new Criteria("createTime").lt(time));	
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		
+		query.with(new Sort(Direction.DESC, "createTime"));
+		query.limit(3);
+
+		List<Article> articleList = mongoTemplate.find(query, Article.class);
+		
+		if(articleList!=null && !articleList.isEmpty()){
+			for (Article article : articleList) {
+				ArticleVo articleVo = new ArticleVo();
+				articleVo.setTitle(article.getTitle());
+				articleVo.setContent(article.getContent());
+				articleVo.setAuth(article.getAuth());
+				articleVo.setCreateTime(article.getCreateTime());
+				articleVo.setType(article.getType());
+				articleVo.setId(article.getId());
+				
+				list.add(articleVo);
+			}
+		}
+
+		return list;
 	}
 
 }

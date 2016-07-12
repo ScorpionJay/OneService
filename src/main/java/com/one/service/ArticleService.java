@@ -31,6 +31,8 @@ public interface ArticleService {
 	 * @return
 	 */
 	List<ArticleVo> getByType(String type,String data,Integer pageSize);
+	
+	List<ArticleVo> getByType(String data);
 
 	/**
 	 * 根据id删除文章
