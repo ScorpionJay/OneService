@@ -41,7 +41,7 @@ public class ArticleServiceImplTest {
 		 Calendar calendar=Calendar.getInstance();   
 		 calendar.setTime(new Date()); 
 		 
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 30; i++) {
 			calendar.set(Calendar.DAY_OF_MONTH,calendar.get(Calendar.DAY_OF_MONTH)-i);//让日期加1
 			articleService.add(new ArticleVo( "测试标题" + i, "测试内容..." + i, "jay", calendar.getTime()));
 		}

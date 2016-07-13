@@ -58,4 +58,14 @@ public class ArticleController {
 		return resultVo;
 	}
 	
+	@RequestMapping(value = "/post/{id}", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultVo getPost(@PathVariable String id) {
+		ResultVo resultVo = new ResultVo();
+		ArticleVo vo = articleService.getById( id );
+		resultVo.setData(vo);
+		log.info(resultVo.toString());
+		return resultVo;
+	}
+	
 }

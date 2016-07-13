@@ -47,7 +47,7 @@ public class ArticleServiceImpl implements ArticleService {
 
 	@Override
 	public ArticleVo getById(String id) {
-		Article article = mongoTemplate.findById(id, Article.class);
+		Article article = mongoTemplate.findById(  id, Article.class);
 		ArticleVo articleVo = new ArticleVo();
 		articleVo.setTitle(article.getTitle());
 		articleVo.setContent(article.getContent());
@@ -116,7 +116,7 @@ public class ArticleServiceImpl implements ArticleService {
 		}
 		
 		query.with(new Sort(Direction.DESC, "createTime"));
-		query.limit(3);
+		query.limit(10);
 
 		List<Article> articleList = mongoTemplate.find(query, Article.class);
 		
