@@ -68,7 +68,7 @@ public class PostsServiceImpl implements PostService {
 
 		Query query = new Query();
 		
-		if(date != null){
+		if(date != null && !date.equals("")){
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			Date time = new Date();
 			try {
@@ -78,7 +78,7 @@ public class PostsServiceImpl implements PostService {
 				e.printStackTrace();
 			}
 		}
-		query.addCriteria(new Criteria("userId").lt(userId));
+		query.addCriteria(new Criteria("userId").is(userId));
 		query.with(new Sort(Direction.DESC, "time"));
 		query.limit(10);
 
@@ -92,7 +92,7 @@ public class PostsServiceImpl implements PostService {
 				post.setUserId(vo.getUserId());
 				post.setLocation(vo.getLocation());
 				post.setSource(vo.getSource());
-				post.setTime(new Date());
+				post.setTime(vo.getTime());
 				post.setType(vo.getType());
 				
 				list.add(post);

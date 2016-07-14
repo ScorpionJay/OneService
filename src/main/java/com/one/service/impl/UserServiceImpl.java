@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
 		UserVo outUser = null; 
 		if(user != null){
 			outUser = new UserVo();
+			outUser.setId(user.getId());
 			outUser.setImg(user.getImg());
 			outUser.setUsername(user.getUsername());
 			outUser.setName(user.getName());

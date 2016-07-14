@@ -69,9 +69,9 @@ public class PostController {
 		return resultVo;
 	}
 
-	@RequestMapping(value = "/list/{date}", method = RequestMethod.GET)
+	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	@ResponseBody
-	public ResultVo get(@PathVariable String date) {
+	public ResultVo get(String date) {
 		ResultVo resultVo = new ResultVo();
 		
 		UserDetails currentUser = authenticationService.currentUser();
