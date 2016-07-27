@@ -53,7 +53,7 @@ public class PostController {
 		
 		UserDetails currentUser = authenticationService.currentUser();
 		UserVo userVo = userService.getByUsername2(currentUser.getUsername());
-		vo.setId(userVo.getId());
+		vo.setUserId(userVo.getId());
 		
 		postService.add(vo);
 		return resultVo;
