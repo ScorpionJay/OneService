@@ -3,6 +3,7 @@ package com.one.controller;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import com.one.main.restsec.AuthenticationService;
 import com.one.main.restsec.TokenManager;
 import com.one.service.FileService;
 import com.one.service.UserService;
+import com.one.util.ExceptionUtil;
 import com.one.vo.ResultVo;
 
 
@@ -44,10 +46,13 @@ public class FileController {
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	ExceptionUtil exceptionUtil;
 
 	@RequestMapping(value = "save", method = RequestMethod.POST)
 	@ResponseBody
-	public ResultVo saveFile(@RequestParam(value = "file") MultipartFile file) {
+	public ResultVo savePicture(@RequestParam(value = "file") MultipartFile file) {
 		
 		log.info("上传头像");
 		ResultVo resultVo = new ResultVo();
@@ -63,6 +68,55 @@ public class FileController {
 			resultVo.setMsg("上传成功");
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value = "singleSave", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo save(@RequestParam(value = "file", required = false) MultipartFile file,HttpServletRequest request) {
+		log.info("upload file");
+		ResultVo resultVo = new ResultVo();
+		
+		String des = request.getParameter("des");
+		if ( file != null ){
+			try {
+				String id = fileService.save(file.getBytes(), file.getOriginalFilename(),file.getContentType());
+				resultVo.setData(id);
+				resultVo.setMsg("upload success");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}else{
+			log.info("Unable to upload. File is empty.");
+			exceptionUtil.getException("file.not.exist");
+		}
+		return resultVo;
+	}
+	
+	
+	@RequestMapping(value = "multipleSave", method = RequestMethod.POST)
+	@ResponseBody
+	public ResultVo multipleSave(@RequestParam(value = "file", required = false) MultipartFile[] files,HttpServletRequest request) {
+		log.info("upload file");
+		String des = request.getParameter("des");
+		
+		ResultVo resultVo = new ResultVo();
+		if (files != null && files.length >0) {
+    		for(int i =0 ;i< files.length; i++){
+				try {
+					MultipartFile file = files[i];
+					String id = fileService.save(file.getBytes(), file.getOriginalFilename(),file.getContentType());
+					resultVo.setData(id);
+					resultVo.setMsg("upload success");
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}else{
+			log.info("Unable to upload. File is empty.");
+			exceptionUtil.getException("file.not.exist");
 		}
 		return resultVo;
 	}

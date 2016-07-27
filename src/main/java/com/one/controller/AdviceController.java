@@ -37,6 +37,7 @@ public class AdviceController {
 			resultVo.setCode( myException.getCode() );
 			resultVo.setMsg( myException.getMessage() );
 		}else{
+			
 			logger.info("服务器错误");
 			Integer code = Integer.parseInt(environment.getProperty("service.error.code"));
 			String msg = environment.getProperty("service.error.msg");
