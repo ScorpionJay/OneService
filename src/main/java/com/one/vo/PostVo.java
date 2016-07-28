@@ -7,6 +7,7 @@ package com.one.vo;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -30,7 +31,7 @@ public class PostVo implements Serializable {
 
 	private String type = "";
 
-	private String[] source;
+	private List<String> source;
 
 	private String location;
 
@@ -68,11 +69,13 @@ public class PostVo implements Serializable {
 		this.userId = userId;
 	}
 
-	public String[] getSource() {
+
+
+	public List<String> getSource() {
 		return source;
 	}
 
-	public void setSource(String[] source) {
+	public void setSource(List<String> source) {
 		this.source = source;
 	}
 
@@ -98,11 +101,10 @@ public class PostVo implements Serializable {
 		super();
 	}
 
-	public PostVo(String userId, String content, String type, String[] source, String location, Date time) {
+	public PostVo(String userId, String content, String type, String location, Date time) {
 		this.userId = userId;
 		this.content = content;
 		this.type = type;
-		this.source = source;
 		this.location = location;
 		this.time = time;
 	}
@@ -110,7 +112,8 @@ public class PostVo implements Serializable {
 	@Override
 	public String toString() {
 		return "PostVo [id=" + id + ", userId=" + userId + ", content=" + content + ", type=" + type + ", source="
-				+ Arrays.toString(source) + ", location=" + location + ", time=" + time + "]";
+				+ source + ", location=" + location + ", time=" + time + "]";
 	}
+
 
 }

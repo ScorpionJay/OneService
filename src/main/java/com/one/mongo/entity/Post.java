@@ -7,6 +7,7 @@ package com.one.mongo.entity;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -31,7 +32,7 @@ public class Post implements Serializable {
 
 	private String type = "";
 
-	private String[] source;
+	private List<String> source;
 
 	private String location;
 
@@ -41,12 +42,11 @@ public class Post implements Serializable {
 		super();
 	}
 
-	public Post(String id, String content, String type, String[] source, String location, Date time) {
+	public Post(String id, String content, String type,  String location, Date time) {
 		super();
 		this.id = id;
 		this.content = content;
 		this.type = type;
-		this.source = source;
 		this.location = location;
 		this.time = time;
 	}
@@ -55,16 +55,15 @@ public class Post implements Serializable {
 		return userId;
 	}
 
+	public void setSource(List<String> source) {
+		this.source = source;
+	}
+
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
 
-	@Override
-	public String toString() {
-		return "Post [id=" + id + ", userId=" + userId + ", content=" + content + ", type=" + type + ", source="
-				+ Arrays.toString(source) + ", location=" + location + ", time=" + time + "]";
-	}
 
 	public String getId() {
 		return id;
@@ -90,12 +89,16 @@ public class Post implements Serializable {
 		this.type = type;
 	}
 
-	public String[] getSource() {
-		return source;
+
+
+	@Override
+	public String toString() {
+		return "Post [id=" + id + ", userId=" + userId + ", content=" + content + ", type=" + type + ", source="
+				+ source + ", location=" + location + ", time=" + time + "]";
 	}
 
-	public void setSource(String[] source) {
-		this.source = source;
+	public List<String> getSource() {
+		return source;
 	}
 
 	public String getLocation() {
