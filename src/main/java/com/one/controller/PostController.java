@@ -25,6 +25,7 @@ import com.one.service.FileService;
 import com.one.service.PostService;
 import com.one.service.UserService;
 import com.one.util.ExceptionUtil;
+import com.one.util.Post;
 import com.one.vo.PostVo;
 import com.one.vo.ResultVo;
 import com.one.vo.UserVo;
@@ -118,25 +119,29 @@ public class PostController {
 		String content = request.getParameter("content");
 		
 		log.info("content{}",content);
-		
+		PostVo vo = new PostVo();
 		List<String> sourceList = new ArrayList<String>(); 
 		// file
 		if ( file != null ){
 			try {
+				log.info("content type{}",file.getContentType());
 				String id = fileService.save(file.getBytes(), file.getOriginalFilename(),file.getContentType());
 				sourceList.add(id);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			
+			vo.setType(Post.PICTURE.toString());
 		}else{
 			log.info("Unable to upload. File is empty.");
-			//exceptionUtil.getException("file.not.exist");
+
+			vo.setType(Post.WORD.toString());
 		}
 		
 		UserDetails currentUser = authenticationService.currentUser();
 		UserVo userVo = userService.getByUsername2(currentUser.getUsername());
 		
-		PostVo vo = new PostVo();
+		
 		vo.setUserId(userVo.getId());
 		vo.setSource(sourceList);
 		vo.setContent(content);
