@@ -113,4 +113,10 @@ public class UserServiceImpl implements UserService {
 		mongoTemplate.findAndModify(new Query(where("username").is(username)), update,  User.class);
 	}
 
+	@Override
+	public User getById(String id) {
+		User user = mongoTemplate.findById(id,  User.class);
+		return user;
+	}
+
 }

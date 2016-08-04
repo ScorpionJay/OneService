@@ -26,6 +26,13 @@ public interface UserService {
 	User getByUsername(String username);
 	
 	/**
+	 * get user by id
+	 * @param id
+	 * @return
+	 */
+	com.one.mongo.entity.User getById(String id);
+	
+	/**
 	 * 根据用户名查找用户
 	 * @param userName
 	 * @return

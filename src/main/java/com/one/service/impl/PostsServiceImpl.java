@@ -16,8 +16,11 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Service;
 
+import com.one.main.domain.User;
 import com.one.mongo.entity.Post;
 import com.one.service.PostService;
+import com.one.service.UserService;
+import com.one.vo.PostAllVo;
 import com.one.vo.PostVo;
 
 /**
@@ -29,6 +32,9 @@ public class PostsServiceImpl implements PostService {
 
 	@Autowired
 	private MongoTemplate mongoTemplate;
+	
+	@Autowired
+	private UserService userService;
 	
 	@Override
 	public void add(PostVo vo) {
@@ -106,6 +112,49 @@ public class PostsServiceImpl implements PostService {
 	public void deleteById(String id) {
 		// delete source TODO
 		mongoTemplate.remove(new Query(where("id").is(id)), Post.class);
+	}
+
+	@Override
+	public List<PostAllVo> getAll(String date) {
+		List<PostAllVo> list = new ArrayList<>();
+
+		Query query = new Query();
+		
+		if(date != null && !date.equals("")){
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Date time = new Date();
+			try {
+				time = sdf.parse(date);
+				query.addCriteria(new Criteria("time").lt(time));	
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		}
+		query.addCriteria(new Criteria("type").is(com.one.util.Post.PICTURE));
+		query.with(new Sort(Direction.DESC, "time"));
+		query.limit(10);
+
+		List<Post> postList = mongoTemplate.find(query, Post.class);
+		
+		if(postList!=null && !postList.isEmpty()){
+			for (Post vo : postList) {
+				PostAllVo post = new PostAllVo();
+				post.setId(vo.getId());
+				post.setContent(vo.getContent());
+				post.setUserId(vo.getUserId());
+				post.setLocation(vo.getLocation());
+				post.setSource(vo.getSource());
+				post.setTime(vo.getTime());
+				post.setType(vo.getType());
+				// 头像 名字
+				com.one.mongo.entity.User  user = userService.getById(vo.getUserId());
+				post.setPicture(user.getImg());
+				post.setName(user.getUsername());
+				list.add(post);
+			}
+		}
+
+		return list;
 	}
 
 }

@@ -26,6 +26,7 @@ import com.one.service.PostService;
 import com.one.service.UserService;
 import com.one.util.ExceptionUtil;
 import com.one.util.Post;
+import com.one.vo.PostAllVo;
 import com.one.vo.PostVo;
 import com.one.vo.ResultVo;
 import com.one.vo.UserVo;
@@ -150,6 +151,23 @@ public class PostController {
 		postService.add(vo);
 		resultVo.setMsg("发表成功");
 		
+		return resultVo;
+	}
+	
+	@RequestMapping(value = "/lists", method = RequestMethod.GET)
+	@ResponseBody
+	public ResultVo gets(String date) {
+		ResultVo resultVo = new ResultVo();
+		
+		List<PostAllVo> list = postService.getAll( date);
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			String json = mapper.writeValueAsString(list);
+			log.info(json);
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+		}
+		resultVo.setData(list);
 		return resultVo;
 	}
 	
