@@ -15,6 +15,8 @@ public interface FileService {
 	
 	void getById(String id,HttpServletResponse response);
 	
+	void getThumbnailById(String id,HttpServletResponse response);
+	
 	void deleteById(String id);
 	
 }

@@ -141,4 +141,14 @@ public class FileController {
 	public void getFileById( @PathVariable String id, HttpServletResponse response){
 		fileService.getById(id,response);
 	}
+	
+	@RequestMapping(value ={"/thumbnail/{id}"}, method = RequestMethod.GET)
+	public void getThumbnail( @PathVariable String id, HttpServletResponse response){
+		fileService.getThumbnailById(id,response);
+	}
+	
+	@RequestMapping(value ={"/thumbnail"}, method = RequestMethod.GET)
+	public void getThumbnail(  HttpServletResponse response){
+		fileService.getThumbnailById("",response);
+	}
 }

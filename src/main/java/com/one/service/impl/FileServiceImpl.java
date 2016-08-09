@@ -20,6 +20,8 @@ import com.mongodb.gridfs.GridFSFile;
 import com.one.exception.MyException;
 import com.one.service.FileService;
 
+import net.coobird.thumbnailator.Thumbnails;
+
 /**
  * file service implement
  * 
@@ -76,8 +78,12 @@ public class FileServiceImpl implements FileService {
 			GridFSDBFile file = operations.findOne(Query.query(GridFsCriteria.where("_id").is(id)));
 			response.setContentType(file.getContentType());
 			InputStream inputStream = file.getInputStream();
+			
+			
 			ByteArrayOutputStream outStream = new ByteArrayOutputStream();
 			byte[] buffer = new byte[1024];
+			
+			Thumbnails.of(inputStream).size(500, 500).toOutputStream(outStream);
 
 			while (inputStream.read(buffer) != -1)
 				outStream.write(buffer);
@@ -95,6 +101,41 @@ public class FileServiceImpl implements FileService {
 			throw new MyException(301, "文件不存在！");
 		}
 
+	}
+
+	@Override
+	public void getThumbnailById(String id, HttpServletResponse response) {
+		  byte[] result = null;
+			try {
+				GridFSDBFile file = operations.findOne(Query.query(GridFsCriteria.where("_id").is(id)));
+				if( file == null  ){
+					// 分会一个默认图片
+					file = operations.findOne(Query.query(GridFsCriteria.where("filename").is("default.jpg")));
+				}
+				
+				response.setContentType(file.getContentType());
+				InputStream inputStream = file.getInputStream();
+				
+				
+				ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+				
+				// 图片压缩
+				//Thumbnails.of(inputStream).size(500, 500).rotate(90).outputQuality(0.8f).toOutputStream(outStream);
+				Thumbnails.of(inputStream).size(100, 100).toOutputStream(outStream);// hard code 100x100
+
+				result = outStream.toByteArray();
+				inputStream.close();
+				outStream.close();
+				
+				OutputStream os = response.getOutputStream();
+				if(null != result){
+					os.write(result); 
+				}
+				
+			} catch (Exception e) {
+				throw new MyException(301, "文件不存在！");
+			}
+		
 	}
 
 }
