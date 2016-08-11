@@ -37,4 +37,6 @@ dependencies {
     testCompile("org.springframework.boot:spring-boot-starter-test")
     
     compile group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
+    
+    compile group: 'cn.jpush.api', name: 'jpush-client', version: '3.2.10'
 }
