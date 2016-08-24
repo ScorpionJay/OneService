@@ -10,7 +10,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
  * @author jay
  * @since 2016年6月16日
  */
-@Document
+@Document(collection="appUser")
 public class User implements Serializable {
 	
 	private static final long serialVersionUID = 1L;

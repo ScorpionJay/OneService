@@ -1,6 +1,7 @@
 package com.one.main.restsec;
 
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.StringTokenizer;
 
@@ -81,6 +82,9 @@ public final class TokenAuthenticationFilter extends GenericFilterBean {
 
 	private void checkLogin(HttpServletRequest httpRequest, HttpServletResponse httpResponse) throws IOException {
 		String authorization = httpRequest.getHeader("Authorization");
+		String username1 = httpRequest.getParameter(HEADER_USERNAME);
+//		String username =  httpRequest.getParameter(HEADER_USERNAME);
+//		String password = httpRequest.getParameter(HEADER_PASSWORD);
 		String username = httpRequest.getHeader(HEADER_USERNAME);
 		String password = httpRequest.getHeader(HEADER_PASSWORD);
 
@@ -115,6 +119,12 @@ public final class TokenAuthenticationFilter extends GenericFilterBean {
 		TokenInfo tokenInfo = authenticationService.authenticate(username, password);
 		if (tokenInfo != null) {
 			httpResponse.setHeader(HEADER_TOKEN, tokenInfo.getToken());
+			httpResponse.setHeader("Access-Control-Allow-Origin", "*");// 设置可以访问的域名  *表示任何域名都可以访问
+			httpResponse.setHeader("Access-Control-Expose-Headers", "Auth-Token"); // 可以访问的头
+			httpResponse.setHeader("Content-Type", "text/plain");
+			//httpResponse.setHeader("Access-Control-Allow-Credentials","true");
+			OutputStream out = httpResponse.getOutputStream();
+			out.write(tokenInfo.getToken().getBytes("UTF-8"));
 			// TODO set other token information possible: IP, ...
 		} else {
 			httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED);

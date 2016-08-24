@@ -16,8 +16,8 @@ public class JpushUtil {
 
 	private Logger log = LoggerFactory.getLogger(this.getClass());
 
-	private final String appKey = "your appKey";
-	private final String masterSecret = "your ms";
+	private final String appKey = "58b1182ea9fc896293055114";
+	private final String masterSecret = "26e2225f69ffb72e5602f232";
 
 	private void push() {
 		JPushClient jpushClient = new JPushClient(masterSecret, appKey);
@@ -44,7 +44,7 @@ public class JpushUtil {
 	}
 
 	public static PushPayload buildPushObject_all_all_alert() {
-		return PushPayload.alertAll("test111");
+		return PushPayload.alertAll("2222222");
 	}
 	
 	public static void main(String[] args) {
